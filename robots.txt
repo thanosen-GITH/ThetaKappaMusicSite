@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://thetakappamusic.com/sitemap.xml
