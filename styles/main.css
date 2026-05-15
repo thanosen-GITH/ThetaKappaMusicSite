@@ -1,0 +1,54 @@
+/* Main styles extracted from inline CSS */
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: #000;
+  color: #f5e7c8;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+main {
+  width: min(92vw, 1200px);
+  text-align: center;
+  padding: 48px 20px;
+}
+
+img {
+  width: min(100%, 1100px);
+  height: auto;
+  display: block;
+  margin: 0 auto 32px;
+}
+
+p {
+  font-size: clamp(18px, 2vw, 26px);
+  letter-spacing: 0.08em;
+  margin: 0;
+  color: #d6ad5c;
+}
+
+.coming {
+  margin-top: 18px;
+  font-size: clamp(14px, 1.4vw, 18px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+/* small JS-ready class to trigger animations later */
+.js-ready main {
+  opacity: 1;
+  transform: none;
+}
+
+main {
+  transition: opacity 420ms ease, transform 420ms ease;
+  opacity: 0;
+  transform: translateY(6px);
+}
