@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — Thanos Karakantas</title>
+  <meta name="description" content="Contact Thanos Karakantas for composition, arrangement, and audio engineering.">
+  <link rel="canonical" href="https://thetakappamusic.com/contact.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <nav>
+      <a class="nav-home" href="/">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="page">
+      <h1>Contact</h1>
+      <p class="muted">Send a message and I'll get back to you.</p>
+
+      <!--
+        Replace the action URL with your Formspree form endpoint (e.g. https://formspree.io/f/your-id)
+      -->
+      <form id="contact-form" class="contact-form" action="https://formspree.io/f/REPLACE_WITH_YOUR_ID" method="POST">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" required>
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+
+        <label for="subject">Subject</label>
+        <input id="subject" name="subject" type="text">
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button type="submit">Send message</button>
+        <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+      </form>
+
+      <p class="muted">No email address is displayed publicly. Messages are forwarded to the address configured in your Formspree account.</p>
+    </div>
+  </main>
+
+  <script src="scripts/main.js" defer></script>
+</body>
+</html>
