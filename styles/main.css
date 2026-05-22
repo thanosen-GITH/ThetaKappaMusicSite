@@ -88,21 +88,37 @@ nav a {
 .nav-home { font-weight: 700; }
 
 /* Hero CTAs */
-.hero { padding-top: 18px; }
+.hero { padding-top: 18px; position: relative; }
 .tagline { margin-top: 6px; }
 .hero h1 { margin: 0; }
+.hero-head { display: inline-block; position: relative; margin: 0 auto; text-align: center; }
 .hero-logo {
-  width: clamp(160px, 30vw, 420px);
+  width: auto; /* preserve intrinsic width; will downscale on small viewports */
   height: auto;
+  max-width: 100%;
   display: block;
   margin: 0 auto;
 }
 .hero-ctas {
-  margin-top: 22px;
+  margin-top: 8px; /* tighten gap under logo */
   display: flex;
   gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
+}
+.hero--overlay .hero-head { display: inline-block; }
+.hero--overlay .hero-ctas {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 8px; /* overlap the lower part of the logo */
+  margin-top: 0;
+  z-index: 3;
+}
+.hero--overlay .cta {
+  background: rgba(17,17,17,0.65);
+  color: #d6ad5c;
+  border: 1px solid rgba(214,173,92,0.12);
 }
 .cta {
   background: transparent;
