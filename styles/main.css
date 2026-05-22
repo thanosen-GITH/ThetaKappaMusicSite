@@ -59,9 +59,22 @@ header {
   top: 18px;
   right: 24px;
   left: 24px;
-  display: flex;
-  justify-content: flex-end;
   pointer-events: auto;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo-link { display: inline-block; }
+.site-logo {
+  width: 64px;
+  height: auto;
+  display: block;
 }
 
 nav a {
@@ -72,9 +85,31 @@ nav a {
   opacity: 0.95;
 }
 
-.nav-home {
+.nav-home { font-weight: 700; }
+
+/* Hero CTAs */
+.hero { padding-top: 18px; }
+.tagline { margin-top: 6px; }
+.hero-ctas {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta {
+  background: transparent;
+  border: 1px solid rgba(214,173,92,0.12);
+  color: #d6ad5c;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
   font-weight: 700;
 }
+.cta:hover, .cta:focus { background: #d6ad5c; color: #000; }
+
+.featured { margin-top: 26px; }
+.featured h2 { margin: 8px 0 6px; font-size: clamp(18px, 2.2vw, 24px); color: #f5e7c8; }
 
 .skip-link {
   position: absolute;

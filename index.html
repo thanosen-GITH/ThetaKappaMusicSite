@@ -24,18 +24,36 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header>
-    <nav>
-      <a class="nav-home" href="/">Home</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
+    <div class="header-inner">
+      <a class="logo-link" href="/">
+        <img src="assets/logo1.png" alt="Theta Kappa Music logo" class="site-logo">
+      </a>
+      <nav aria-label="Primary">
+        <a class="nav-home" href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
   </header>
 
   <main id="main">
-    <img src="assets/logo1.png" alt="Theta Kappa Music logo">
-    <h1>Thanos Karakantas</h1>
-    <p>Music • Composition • Arrangement • Audio Engineering</p>
-    <p class="coming">Website coming soon</p>
+    <div class="hero">
+      <h1>Thanos Karakantas</h1>
+      <p class="tagline">Music • Composition • Arrangement • Audio Engineering</p>
+
+      <div class="hero-ctas" role="navigation" aria-label="Primary site areas">
+        <a class="cta" href="/music.html">Music</a>
+        <a class="cta" href="/tonmeister.html">Tonmeister</a>
+        <a class="cta" href="/apps.html">Apps</a>
+      </div>
+
+      <section class="featured" aria-labelledby="featured-heading">
+        <h2 id="featured-heading">Featured work</h2>
+        <p class="muted">A curated selection of recent projects and releases.</p>
+      </section>
+
+      <p class="coming">Website coming soon</p>
+    </div>
   </main>
 
   <script src="scripts/main.js" defer></script>
