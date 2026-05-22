@@ -90,6 +90,13 @@ nav a {
 /* Hero CTAs */
 .hero { padding-top: 18px; }
 .tagline { margin-top: 6px; }
+.hero h1 { margin: 0; }
+.hero-logo {
+  width: clamp(160px, 30vw, 420px);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
 .hero-ctas {
   margin-top: 22px;
   display: flex;
