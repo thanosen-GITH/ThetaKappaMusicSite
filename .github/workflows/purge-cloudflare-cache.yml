@@ -1,0 +1,81 @@
+name: Purge Cloudflare Cache After Pages Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  wait-for-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install deps
+        run: sudo apt-get update && sudo apt-get install -y jq curl
+
+      - name: Wait for Cloudflare Pages deployment
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_PAGES_PROJECT_NAME: ${{ secrets.CF_PAGES_PROJECT_NAME }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CF_API_TOKEN:-}" ] || [ -z "${CF_ACCOUNT_ID:-}" ] || [ -z "${CF_PAGES_PROJECT_NAME:-}" ]; then
+            echo "Missing CF_API_TOKEN, CF_ACCOUNT_ID, or CF_PAGES_PROJECT_NAME. Set these in repository secrets." >&2
+            exit 1
+          fi
+
+          max_retries=40
+          sleep_seconds=10
+          for i in $(seq 1 $max_retries); do
+            echo "Attempt $i/$max_retries: fetching project info..."
+            proj=$(curl -s -H "Authorization: Bearer $CF_API_TOKEN" -H "Content-Type: application/json" "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PAGES_PROJECT_NAME")
+            # Try canonical_deployment first (production); fallback to latest_deployment
+            commit=$(echo "$proj" | jq -r '.result.canonical_deployment.deployment_trigger.metadata.commit_hash // empty')
+            status=$(echo "$proj" | jq -r '.result.canonical_deployment.latest_stage.status // empty')
+            if [ -z "$commit" ]; then
+              commit=$(echo "$proj" | jq -r '.result.latest_deployment.deployment_trigger.metadata.commit_hash // empty')
+              status=$(echo "$proj" | jq -r '.result.latest_deployment.latest_stage.status // empty')
+            fi
+
+            echo "Found commit: $commit, status: $status"
+            if [ "$commit" = "$GITHUB_SHA" ]; then
+              if [ "$status" = "success" ]; then
+                echo "Deployment for commit $GITHUB_SHA succeeded."
+                exit 0
+              else
+                echo "Deployment for commit $GITHUB_SHA in progress (status=$status). Waiting..."
+              fi
+            else
+              echo "Latest deployment commit ($commit) doesn't match current commit ($GITHUB_SHA). Waiting..."
+            fi
+
+            sleep $sleep_seconds
+          done
+
+          echo "Timed out waiting for Pages deployment for commit $GITHUB_SHA" >&2
+          exit 1
+
+  purge-cache:
+    needs: wait-for-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq curl
+
+      - name: Purge Cloudflare zone cache
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CF_API_TOKEN:-}" ] || [ -z "${CF_ZONE_ID:-}" ]; then
+            echo "Missing CF_API_TOKEN or CF_ZONE_ID. Set these in repository secrets." >&2
+            exit 1
+          fi
+          echo "Purging Cloudflare cache for zone $CF_ZONE_ID..."
+          resp=$(curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}')
+          echo "$resp" | jq .
