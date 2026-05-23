@@ -4,29 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact — Thanos Karakantas</title>
-  <meta name="description" content="Contact Thanos Karakantas for composition, arrangement, and audio engineering.">
+  <meta name="description" content="Contact Thanos Karakantas for music, Tonmeister work, sound engineering, arrangements, and collaborations.">
   <link rel="canonical" href="https://thetakappamusic.com/contact.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/main.css?v=20260523-spacing">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header>
-    <nav>
-      <a class="nav-home" href="/">Home</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
+  <header class="site-header">
+    <div class="header-inner">
+      <nav class="identity-nav" aria-label="Primary">
+        <a class="emblem-link" href="/" aria-label="Theta Kappa Music home">
+          <img src="assets/logo2-cropped-emblem.png" alt="" class="site-emblem" width="320" height="208">
+        </a>
+        <a class="nav-home" href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+      <nav class="section-nav" aria-label="Site sections">
+        <a href="/music.html">Music</a>
+        <a href="/tonmeister.html">Tonmeister</a>
+        <a href="/apps.html">Apps</a>
+        <a href="/services.html">Services</a>
+      </nav>
+    </div>
   </header>
 
   <main id="main">
     <div class="page">
-      <h1>Contact</h1>
-      <p class="muted">Send a message and I'll get back to you.</p>
+      <p class="eyebrow">Contact</p>
+      <h1>Send a message</h1>
+      <p class="lead">For projects, recordings, performances, services, or collaborations.</p>
 
-      <!--
-        Replace the action URL with your Formspree form endpoint (e.g. https://formspree.io/f/your-id)
-      -->
       <form id="contact-form" class="contact-form" action="https://formspree.io/f/REPLACE_WITH_YOUR_ID" method="POST">
         <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 
@@ -46,7 +55,7 @@
         <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
       </form>
 
-      <p class="muted">No email address is displayed publicly. Messages are forwarded to the address configured in the Formspree account.</p>
+      <p class="note">No email address is displayed publicly. Messages are forwarded to the address configured in the Formspree account.</p>
     </div>
   </main>
 
