@@ -141,9 +141,9 @@ body:not(.home) main {
 }
 
 .hero-ctas {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
   justify-content: center;
-  flex-wrap: wrap;
   gap: 12px;
   margin-top: -12px;
 }
@@ -333,6 +333,10 @@ textarea {
 }
 
 @media (max-width: 760px) {
+  body.home {
+    display: block;
+  }
+
   .site-header {
     position: static;
     padding: 14px 16px 0;
@@ -350,7 +354,7 @@ textarea {
   }
 
   body.home main {
-    padding-top: 38px;
+    padding-top: 40px;
   }
 
   body:not(.home) main {
