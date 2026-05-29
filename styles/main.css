@@ -241,6 +241,61 @@ li {
   font-size: 22px;
 }
 
+.app-logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.app-logo-link img {
+  display: block;
+  width: 64px;
+  max-width: 64px;
+  height: auto;
+}
+
+.app-hero-panel {
+  display: grid;
+  grid-template-columns: minmax(128px, 256px) minmax(220px, 1fr);
+  align-items: center;
+  gap: 24px;
+  margin: 18px 0 24px;
+}
+
+.app-hero-icon {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.app-store-placeholder {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.app-store-placeholder .eyebrow {
+  margin-bottom: 12px;
+}
+
+.store-link-list {
+  display: grid;
+  gap: 10px;
+}
+
+.store-link-placeholder {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px dashed rgba(214, 173, 92, 0.4);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
 .content-grid p,
 .content-grid li,
 .note {
@@ -391,6 +446,14 @@ textarea {
   .site-emblem {
     width: 64px;
     max-width: 64px;
+  }
+
+  .app-hero-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .app-hero-icon {
+    max-width: 180px;
   }
 
 }
