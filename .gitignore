@@ -12,3 +12,4 @@ yarn-error.log*
 .idea/
 /.sass-cache
 scripts/publish.sh
+empty.html
