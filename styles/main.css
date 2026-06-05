@@ -351,6 +351,8 @@ li {
 .button-link,
 button[type="submit"] {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: fit-content;
   border: 1px solid var(--gold);
   background: var(--gold);
@@ -361,6 +363,120 @@ button[type="submit"] {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 17px;
   text-decoration: none;
+}
+
+.tonmeister-cv {
+  max-width: 1040px;
+}
+
+.cv-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(112px, 18vw, 188px);
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 22px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.cv-hero-icon {
+  justify-self: end;
+  width: 100%;
+  max-width: 188px;
+  height: auto;
+}
+
+.cv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin: 0 0 36px;
+}
+
+.cv-section {
+  margin-top: 34px;
+}
+
+.cv-section h2 {
+  margin: 0 0 14px;
+  color: var(--text);
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.15;
+}
+
+.cv-section h3 {
+  margin: 0 0 8px;
+  font-size: 21px;
+  line-height: 1.25;
+}
+
+.cv-section p,
+.cv-section li {
+  color: var(--muted);
+  font-size: clamp(16px, 1.55vw, 19px);
+  line-height: 1.58;
+  letter-spacing: 0;
+}
+
+.cv-profile p {
+  color: var(--gold);
+}
+
+.cv-card-grid,
+.cv-skill-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.cv-card-grid article,
+.cv-skill-groups > div,
+.cv-timeline article,
+.cv-contact {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.cv-card-grid p,
+.cv-timeline p,
+.cv-skill-groups li,
+.cv-contact p {
+  margin-bottom: 0;
+}
+
+.cv-timeline {
+  display: grid;
+  gap: 14px;
+}
+
+.cv-date {
+  margin: 0 0 6px;
+  color: var(--gold);
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cv-skill-groups ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.cv-skill-groups li + li {
+  margin-top: 6px;
+}
+
+.cv-contact .button-link {
+  margin-top: 6px;
+}
+
+.back-to-top {
+  margin-top: 28px;
+  font-size: 16px;
 }
 
 .contact-cta {
@@ -459,6 +575,25 @@ textarea {
 
   .hero-ctas {
     margin-top: 0;
+  }
+
+  .cv-hero,
+  .cv-card-grid,
+  .cv-skill-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-hero {
+    gap: 18px;
+  }
+
+  .cv-hero-icon {
+    justify-self: start;
+    max-width: 128px;
+  }
+
+  .cv-actions {
+    margin-bottom: 30px;
   }
 }
 
