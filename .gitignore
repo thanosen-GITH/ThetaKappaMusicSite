@@ -12,5 +12,4 @@ yarn-error.log*
 .vscode/
 .idea/
 /.sass-cache
-scripts/publish.sh
 empty.html
