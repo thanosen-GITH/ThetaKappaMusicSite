@@ -33,9 +33,9 @@ git push -u origin main
 
 2. In Cloudflare Pages connect this repository and set the build settings to "No build command" and publish the root directory, if you keep a plain static site.
 
-3. Deploy only from Cloudflare Pages' Git integration or from a clean artifact folder. Do not upload the local repository folder directly, because hidden directories such as `.git/` must never be published.
+3. Deploy only from the clean `public/` artifact folder configured in `wrangler.jsonc`. Do not upload the local repository folder directly, because hidden directories such as `.git/` must never be published.
 
-4. The `_redirects` file blocks `/.git` and `/.git/*` on Cloudflare Pages. After any security-related deployment, purge Cloudflare cache and verify:
+4. The Worker in `src/worker.js` returns `404` for `/.git` and `/.git/*`. After any security-related deployment, purge Cloudflare cache and verify:
 
 ```bash
 curl -I https://thetakappamusic.com/.git/config

@@ -13,17 +13,16 @@ Treat this as an active Git metadata exposure until a clean deployment and cache
 ## Immediate Remediation
 
 1. In Cloudflare Pages, confirm the project is connected to `thanosen-GITH/ThetaKappaMusicSite`, branch `main`.
-2. Confirm the build settings are:
-   - Build command: none
-   - Publish directory: repository root (`/`)
-3. Trigger a fresh deployment from the latest `main` commit.
-4. Do not use manual uploads that include hidden files or local project metadata.
-5. Purge Cloudflare cache for the zone. Prefer "Purge Everything"; at minimum purge:
+2. Confirm the deploy command is `npx wrangler deploy`.
+3. Confirm `wrangler.jsonc` deploys static assets from `public/`, not the repository root.
+4. Trigger a fresh deployment from the latest `main` commit.
+5. Do not use manual uploads that include hidden files or local project metadata.
+6. Purge Cloudflare cache for the zone. Prefer "Purge Everything"; at minimum purge:
    - `https://thetakappamusic.com/.git/config`
    - `https://thetakappamusic.com/.git/index`
    - `https://thetakappamusic.com/.git/HEAD`
 
-The repository includes `_redirects` rules that make Cloudflare Pages return `404` for `/.git` and `/.git/*` after the clean deployment is active.
+The repository includes a Worker guard in `src/worker.js` that returns `404` for `/.git` and `/.git/*` after the clean deployment is active. Static assets are deployed from the clean `public/` artifact folder, so `.git/`, `.wrangler/`, and other local metadata are not part of the asset source.
 
 ## Verification
 
