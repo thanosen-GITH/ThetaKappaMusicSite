@@ -13,3 +13,9 @@ yarn-error.log*
 /.sass-cache
 scripts/publish.sh
 empty.html
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
