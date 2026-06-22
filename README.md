@@ -31,11 +31,26 @@ git branch -M main
 git push -u origin main
 ```
 
-2. In Cloudflare Pages connect this repository and set the build settings to "No build command" and publish the root directory, if you keep a plain static site.
+2. Edit the source files at the repository root. `assets/` is the source-of-truth asset directory and may contain editable source artwork such as `.xcf` files. HTML references should always use `assets/...`; do not edit `public/` directly.
 
-3. Deploy only from the clean `public/` artifact folder configured in `wrangler.jsonc`. Do not upload the local repository folder directly, because hidden directories such as `.git/` must never be published.
+3. Generate the clean deployment artifact when you want to inspect it without committing or deploying:
 
-4. The Worker in `src/worker.js` returns `404` for `/.git` and `/.git/*`. After any security-related deployment, purge Cloudflare cache and verify:
+```bash
+./scripts/sync-public.sh
+git diff -- public/
+```
+
+The sync copies browser-ready files from the working tree, including newly created assets, and excludes local metadata and source artwork such as `.xcf` files.
+
+4. Commit, push, and deploy the site with:
+
+```bash
+./scripts/publish.sh "Describe the website update"
+```
+
+The publish script synchronizes `public/`, stages only website and deployment files, commits them, pushes the current branch, and deploys through Wrangler. Review `git status` before running it; unrelated files are not automatically staged. Deploy only from the clean `public/` folder configured in `wrangler.jsonc`, never from the repository root.
+
+5. The Worker in `src/worker.js` returns `404` for `/.git` and `/.git/*`. After any security-related deployment, purge Cloudflare cache and verify:
 
 ```bash
 curl -I https://thetakappamusic.com/.git/config
@@ -50,7 +65,8 @@ See `docs/security-incident-git-exposure.md` for the incident checklist.
 ## Project structure
 
 - `index.html` — landing page
-- `assets/` — images, fonts
+- `assets/` — source-of-truth images and editable artwork
+- `public/` — generated, tracked deployment artifact; do not edit directly
 - `styles/` — CSS or SCSS
 - `scripts/` — JavaScript
 
