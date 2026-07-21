@@ -222,6 +222,61 @@ li {
   color: var(--muted);
 }
 
+.childhood-photo-story {
+  margin: 32px 0 38px;
+}
+
+.biopic-photo {
+  margin: 32px 0 38px;
+}
+
+.biopic-gallery {
+  margin: 32px 0 38px;
+}
+
+.biopic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 14px;
+}
+
+.biopic-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.biopic-photo img,
+.biopic-grid img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.childhood-photo-grid {
+  display: grid;
+  grid-template-columns: 1.22fr 1fr;
+  align-items: end;
+  gap: 14px;
+}
+
+.childhood-photo-grid img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.childhood-photo-story figcaption,
+.biopic-photo figcaption,
+.biopic-gallery figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
 .content-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -611,6 +666,15 @@ textarea {
   .site-emblem {
     width: 64px;
     max-width: 64px;
+  }
+
+  .childhood-photo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .biopic-grid,
+  .biopic-grid--two {
+    grid-template-columns: 1fr;
   }
 
   .app-hero-panel {
