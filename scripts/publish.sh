@@ -21,7 +21,7 @@ git add -- \
   assets \
   apps \
   robots.txt \
-  scripts/main.js \
+  'scripts/*.js' \
   scripts/publish.sh \
   scripts/sync-public.sh \
   sitemap.xml \

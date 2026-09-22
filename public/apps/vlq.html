@@ -7,7 +7,7 @@
   <meta name="description" content="Decode MIDI variable-length quantity (VLQ) bytes and view the result in decimal, hexadecimal, and binary.">
   <link rel="canonical" href="https://thetakappamusic.com/apps/vlq.html">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../styles/main.css?v=20260922-vlq">
+  <link rel="stylesheet" href="../styles/main.css?v=20260922-vlq-ppq">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -75,11 +75,27 @@
             <p id="vlq-input-help" class="vlq-help">Enter hexadecimal bytes, separated by spaces, or as one compact value (for example, <code>81 00</code> or <code>8100</code>).</p>
           </div>
 
+          <div class="vlq-input-group vlq-ppq-group">
+            <label for="vlq-ppq">PPQ</label>
+            <input
+              id="vlq-ppq"
+              name="vlq-ppq"
+              type="number"
+              value="9600"
+              min="1"
+              step="1"
+              inputmode="numeric"
+              aria-describedby="vlq-ppq-help vlq-error"
+            >
+            <p id="vlq-ppq-help" class="vlq-help">Pulses (ticks) per quarter note.</p>
+          </div>
+
           <div class="vlq-examples" aria-label="Example values">
             <span>Try:</span>
             <button type="button" data-bytes="00">0</button>
             <button type="button" data-bytes="7F">127</button>
             <button type="button" data-bytes="81 00">128</button>
+            <button type="button" data-bytes="CB 00">9,600 (1 beat)</button>
             <button type="button" data-bytes="FF 7F">16,383</button>
             <button type="button" data-bytes="FF FF FF 7F">268,435,455</button>
           </div>
@@ -104,12 +120,17 @@
             <dt>Binary</dt>
             <dd><output id="vlq-binary" for="vlq-input">0b10000000</output></dd>
           </div>
+          <div>
+            <dt>Duration (quarter notes)</dt>
+            <dd><output id="vlq-duration" for="vlq-input vlq-ppq">0.0133333333</output></dd>
+          </div>
         </dl>
       </section>
 
       <section class="vlq-notes" aria-labelledby="notes-heading">
         <h2 id="notes-heading">Input notes</h2>
         <p>A MIDI VLQ contains one to four bytes. The high bit of each byte indicates whether another byte follows; the remaining seven bits carry the value.</p>
+        <p>Delta-time duration in quarter notes is the decoded VLQ value divided by PPQ. For example, <code>CB 00</code> decodes to 9,600 ticks, which is <code>1.0</code> quarter note at 9,600 PPQ.</p>
         <p>For decimal input, enter each encoded byte separately, such as <code>129 0</code>, or enter the bytes as one packed value, such as <code>33024</code>. In the matching input mode, prefixes such as <code>0x</code> and <code>0b</code> are accepted, as are spaces, commas, colons, or hyphens between bytes.</p>
       </section>
 
@@ -118,6 +139,6 @@
   </main>
 
   <script src="../scripts/main.js" defer></script>
-  <script src="../scripts/vlq.js" defer></script>
+  <script src="../scripts/vlq.js?v=20260922-ppq" defer></script>
 </body>
 </html>

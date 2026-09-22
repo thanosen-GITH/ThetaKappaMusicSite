@@ -553,6 +553,7 @@ label {
 
 input[type="text"],
 input[type="email"],
+input[type="number"],
 textarea {
   width: 100%;
   padding: 10px 12px;
@@ -661,7 +662,8 @@ textarea {
   display: grid;
 }
 
-#vlq-input {
+#vlq-input,
+#vlq-ppq {
   padding: 13px 14px;
   border-color: rgba(214, 173, 92, 0.42);
   background: #090909;
@@ -670,14 +672,20 @@ textarea {
   letter-spacing: 0.04em;
 }
 
-#vlq-input:focus {
+#vlq-input:focus,
+#vlq-ppq:focus {
   border-color: var(--gold);
   outline: 2px solid rgba(214, 173, 92, 0.24);
   outline-offset: 2px;
 }
 
-#vlq-input[aria-invalid="true"] {
+#vlq-input[aria-invalid="true"],
+#vlq-ppq[aria-invalid="true"] {
   border-color: #e48975;
+}
+
+#vlq-ppq {
+  width: min(100%, 220px);
 }
 
 .vlq-help,
