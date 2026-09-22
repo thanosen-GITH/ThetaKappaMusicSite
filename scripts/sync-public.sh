@@ -18,7 +18,7 @@ rsync -a --delete --delete-excluded \
   --include='/apps/***' \
   --include='/assets/***' \
   --include='/scripts/' \
-  --include='/scripts/main.js' \
+  --include='/scripts/*.js' \
   --include='/styles/***' \
   --include='/tonmeister/***' \
   --exclude='*' \

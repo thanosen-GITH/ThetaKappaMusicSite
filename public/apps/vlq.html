@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLQ Decoder — Theta Kappa Music</title>
+  <meta name="description" content="Decode MIDI variable-length quantity (VLQ) bytes and view the result in decimal, hexadecimal, and binary.">
+  <link rel="canonical" href="https://thetakappamusic.com/apps/vlq.html">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles/main.css?v=20260922-vlq">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <nav class="identity-nav" aria-label="Primary">
+        <a class="emblem-link" href="../" aria-label="Theta Kappa Music home">
+          <img src="../assets/logo2-cropped-emblem.png" alt="" class="site-emblem" width="320" height="208">
+        </a>
+        <a class="nav-home" href="../">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <nav class="section-nav" aria-label="Site sections">
+        <a href="../music.html">Music</a>
+        <a href="../tonmeister.html">Tonmeister</a>
+        <a href="../apps.html">Apps</a>
+        <a href="../services.html">Services</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="page vlq-page">
+      <p class="eyebrow">Developer tool</p>
+      <h1>MIDI VLQ Decoder</h1>
+      <p class="lead">Enter the encoded bytes of a MIDI variable-length quantity. The decoded value is displayed in decimal, hexadecimal, and binary.</p>
+
+      <section class="vlq-panel" aria-labelledby="decoder-heading">
+        <h2 id="decoder-heading">Decode a value</h2>
+
+        <form id="vlq-form" class="vlq-form" novalidate>
+          <fieldset class="vlq-format-picker">
+            <legend>Input format</legend>
+            <div class="vlq-format-options">
+              <label>
+                <input type="radio" name="vlq-format" value="hex" checked>
+                <span>Hex</span>
+              </label>
+              <label>
+                <input type="radio" name="vlq-format" value="binary">
+                <span>Binary</span>
+              </label>
+              <label>
+                <input type="radio" name="vlq-format" value="decimal">
+                <span>Decimal</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="vlq-input-group">
+            <label for="vlq-input">Encoded VLQ bytes</label>
+            <input
+              id="vlq-input"
+              name="vlq-input"
+              type="text"
+              value="81 00"
+              placeholder="81 00"
+              inputmode="text"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-describedby="vlq-input-help vlq-error"
+            >
+            <p id="vlq-input-help" class="vlq-help">Enter hexadecimal bytes, separated by spaces, or as one compact value (for example, <code>81 00</code> or <code>8100</code>).</p>
+          </div>
+
+          <div class="vlq-examples" aria-label="Example values">
+            <span>Try:</span>
+            <button type="button" data-bytes="00">0</button>
+            <button type="button" data-bytes="7F">127</button>
+            <button type="button" data-bytes="81 00">128</button>
+            <button type="button" data-bytes="FF 7F">16,383</button>
+            <button type="button" data-bytes="FF FF FF 7F">268,435,455</button>
+          </div>
+
+          <button class="vlq-decode-button" type="submit">Decode VLQ</button>
+          <p id="vlq-error" class="vlq-error" role="alert" aria-live="assertive"></p>
+        </form>
+      </section>
+
+      <section class="vlq-results" aria-labelledby="results-heading" aria-live="polite">
+        <h2 id="results-heading">Decoded value</h2>
+        <dl>
+          <div>
+            <dt>Decimal</dt>
+            <dd><output id="vlq-decimal" for="vlq-input">128</output></dd>
+          </div>
+          <div>
+            <dt>Hexadecimal</dt>
+            <dd><output id="vlq-hex" for="vlq-input">0x80</output></dd>
+          </div>
+          <div>
+            <dt>Binary</dt>
+            <dd><output id="vlq-binary" for="vlq-input">0b10000000</output></dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="vlq-notes" aria-labelledby="notes-heading">
+        <h2 id="notes-heading">Input notes</h2>
+        <p>A MIDI VLQ contains one to four bytes. The high bit of each byte indicates whether another byte follows; the remaining seven bits carry the value.</p>
+        <p>For decimal input, enter each encoded byte separately, such as <code>129 0</code>, or enter the bytes as one packed value, such as <code>33024</code>. In the matching input mode, prefixes such as <code>0x</code> and <code>0b</code> are accepted, as are spaces, commas, colons, or hyphens between bytes.</p>
+      </section>
+
+      <noscript><p class="vlq-noscript">This decoder requires JavaScript to run.</p></noscript>
+    </article>
+  </main>
+
+  <script src="../scripts/main.js" defer></script>
+  <script src="../scripts/vlq.js" defer></script>
+</body>
+</html>
