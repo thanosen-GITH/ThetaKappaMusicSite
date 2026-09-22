@@ -775,6 +775,7 @@ textarea {
 
 .vlq-panel,
 .vlq-results,
+.vlq-guide,
 .vlq-notes {
   margin-top: 28px;
 }
@@ -789,9 +790,14 @@ textarea {
 
 .vlq-panel h2,
 .vlq-results h2,
+.vlq-guide h2,
 .vlq-notes h2 {
   margin: 0 0 18px;
   font-size: clamp(22px, 3vw, 28px);
+}
+
+.vlq-guide h2:not(:first-child) {
+  margin-top: 32px;
 }
 
 .vlq-form {
@@ -884,6 +890,8 @@ textarea {
 
 .vlq-help,
 .vlq-error,
+.vlq-guide p,
+.vlq-guide li,
 .vlq-notes p,
 .vlq-noscript {
   font-size: 16px;
@@ -897,6 +905,7 @@ textarea {
 }
 
 .vlq-help code,
+.vlq-guide code,
 .vlq-notes code {
   color: var(--text);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -974,8 +983,58 @@ textarea {
   padding-top: 4px;
 }
 
+.vlq-guide p,
+.vlq-guide li,
 .vlq-notes p {
   color: var(--muted);
+}
+
+.vlq-guide ol {
+  padding-left: 24px;
+}
+
+.vlq-guide li + li {
+  margin-top: 8px;
+}
+
+.vlq-formula {
+  padding: 14px 16px;
+  border-left: 3px solid var(--gold);
+  background: var(--panel);
+  overflow-wrap: anywhere;
+}
+
+.vlq-table-wrap {
+  margin-top: 24px;
+  overflow-x: auto;
+}
+
+.vlq-guide table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.vlq-guide caption {
+  margin-bottom: 10px;
+  color: var(--text);
+  font-weight: 700;
+  text-align: left;
+}
+
+.vlq-guide th,
+.vlq-guide td {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.vlq-guide th {
+  color: var(--gold);
+  background: var(--panel);
 }
 
 .vlq-noscript {
