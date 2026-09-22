@@ -252,4 +252,207 @@
   });
 
   decode();
+
+  const encodeForm = document.getElementById('vlq-encode-form');
+  if (!encodeForm) return;
+
+  const encodeInput = document.getElementById('vlq-encode-input');
+  const encodeInputLabel = document.getElementById('vlq-encode-input-label');
+  const encodePpqInput = document.getElementById('vlq-encode-ppq');
+  const encodeHelp = document.getElementById('vlq-encode-input-help');
+  const encodeError = document.getElementById('vlq-encode-error');
+  const encodedDecimalOutput = document.getElementById('vlq-encoded-decimal');
+  const encodedHexOutput = document.getElementById('vlq-encoded-hex');
+  const encodedBinaryOutput = document.getElementById('vlq-encoded-binary');
+  const encodeFormatInputs = Array.from(encodeForm.elements['vlq-encode-format']);
+  const maxMidiVlq = 0x0fffffff;
+  let lastEncodeTicks = 9600;
+
+  const encodeFormatSettings = {
+    hex: {
+      label: 'Value to encode',
+      placeholder: '2580',
+      inputMode: 'text',
+      help: 'Enter the normal unsigned integer in hexadecimal (for example, 2580).'
+    },
+    binary: {
+      label: 'Value to encode',
+      placeholder: '100101100000000',
+      inputMode: 'text',
+      help: 'Enter the normal unsigned integer in binary.'
+    },
+    decimal: {
+      label: 'Value to encode',
+      placeholder: '9600',
+      inputMode: 'numeric',
+      help: 'Enter the normal decimal integer that you want to encode as a MIDI VLQ.'
+    },
+    duration: {
+      label: 'Duration in quarter notes',
+      placeholder: '1.0',
+      inputMode: 'decimal',
+      help: 'Enter a non-negative quarter-note duration. Fractional tick results are rounded to the nearest whole tick.'
+    }
+  };
+
+  function selectedEncodeFormat() {
+    return encodeFormatInputs.find((radio) => radio.checked).value;
+  }
+
+  function parseUnsignedInteger(value, format) {
+    let normalized = value.trim();
+    if (format === 'hex') normalized = normalized.replace(/^0x/i, '');
+    if (format === 'binary') normalized = normalized.replace(/^0b/i, '');
+
+    const patterns = {
+      hex: /^[0-9a-f]+$/i,
+      binary: /^[01]+$/,
+      decimal: /^\d+$/
+    };
+
+    if (!normalized) throw new Error('Enter a value to encode.');
+    if (!patterns[format].test(normalized)) {
+      const formatName = format === 'hex' ? 'Hexadecimal' : `${format[0].toUpperCase()}${format.slice(1)}`;
+      throw new Error(`${formatName} input contains invalid characters.`);
+    }
+
+    const radix = format === 'hex' ? 16 : format === 'binary' ? 2 : 10;
+    return Number.parseInt(normalized, radix);
+  }
+
+  function parseDurationTicks(value, ppq) {
+    const normalized = value.trim();
+    if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(normalized)) {
+      throw new Error('Duration must be a non-negative decimal number.');
+    }
+
+    return Math.round(Number(normalized) * ppq);
+  }
+
+  function validateEncodeRange(value) {
+    if (!Number.isSafeInteger(value) || value < 0) {
+      throw new Error('The value must be a non-negative whole number.');
+    }
+    if (value > maxMidiVlq) {
+      throw new Error('A standard four-byte MIDI VLQ cannot exceed 268,435,455.');
+    }
+    return value;
+  }
+
+  function encodeVlq(value) {
+    const bytes = [value & 0x7f];
+    let remaining = Math.floor(value / 128);
+
+    while (remaining > 0) {
+      bytes.unshift((remaining & 0x7f) | 0x80);
+      remaining = Math.floor(remaining / 128);
+    }
+    return bytes;
+  }
+
+  function showEncodedBytes(bytes) {
+    encodedDecimalOutput.value = bytes.join(' ');
+    encodedHexOutput.value = bytes.map((byte) => byte.toString(16).toUpperCase().padStart(2, '0')).join(' ');
+    encodedBinaryOutput.value = bytes.map((byte) => byte.toString(2).padStart(8, '0')).join(' ');
+  }
+
+  function clearEncodedBytes() {
+    encodedDecimalOutput.value = '—';
+    encodedHexOutput.value = '—';
+    encodedBinaryOutput.value = '—';
+  }
+
+  function encode() {
+    const format = selectedEncodeFormat();
+    let ppq;
+
+    if (format === 'duration') {
+      try {
+        ppq = parsePpq(encodePpqInput.value);
+        encodePpqInput.removeAttribute('aria-invalid');
+      } catch (ppqError) {
+        clearEncodedBytes();
+        encodePpqInput.setAttribute('aria-invalid', 'true');
+        encodeError.textContent = ppqError.message;
+        return false;
+      }
+    } else {
+      encodePpqInput.removeAttribute('aria-invalid');
+    }
+
+    try {
+      const value = format === 'duration'
+        ? parseDurationTicks(encodeInput.value, ppq)
+        : parseUnsignedInteger(encodeInput.value, format);
+      const ticks = validateEncodeRange(value);
+      showEncodedBytes(encodeVlq(ticks));
+      lastEncodeTicks = ticks;
+      encodeInput.removeAttribute('aria-invalid');
+      encodeError.textContent = '';
+      return true;
+    } catch (valueError) {
+      clearEncodedBytes();
+      encodeInput.setAttribute('aria-invalid', 'true');
+      encodeError.textContent = valueError.message;
+      return false;
+    }
+  }
+
+  function ticksToEncodeFormat(ticks, format, ppq) {
+    if (format === 'hex') return ticks.toString(16).toUpperCase();
+    if (format === 'binary') return ticks.toString(2);
+    if (format === 'duration') {
+      const duration = ticks / ppq;
+      return Number.isInteger(duration) ? duration.toFixed(1) : duration.toString();
+    }
+    return ticks.toString(10);
+  }
+
+  function updateEncodeFormat() {
+    const format = selectedEncodeFormat();
+    const settings = encodeFormatSettings[format];
+    let ppq = 9600;
+
+    try {
+      ppq = parsePpq(encodePpqInput.value);
+    } catch (_) {
+      encodePpqInput.value = '9600';
+    }
+
+    encodeInputLabel.textContent = settings.label;
+    encodeInput.placeholder = settings.placeholder;
+    encodeInput.inputMode = settings.inputMode;
+    encodeHelp.textContent = settings.help;
+    encodePpqInput.disabled = format !== 'duration';
+    encodeInput.value = ticksToEncodeFormat(lastEncodeTicks, format, ppq);
+    encode();
+  }
+
+  encodeForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    encode();
+  });
+
+  encodeInput.addEventListener('input', encode);
+  encodePpqInput.addEventListener('input', encode);
+  encodeFormatInputs.forEach((radio) => radio.addEventListener('change', updateEncodeFormat));
+
+  document.querySelectorAll('[data-encode-value]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const ticks = Number(button.dataset.encodeValue);
+      let ppq = 9600;
+
+      try {
+        ppq = parsePpq(encodePpqInput.value);
+      } catch (_) {
+        encodePpqInput.value = '9600';
+      }
+
+      encodeInput.value = ticksToEncodeFormat(ticks, selectedEncodeFormat(), ppq);
+      encode();
+      encodeInput.focus();
+    });
+  });
+
+  encode();
 })();

@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Online MIDI VLQ Decoder | Hex, Binary &amp; Decimal</title>
-  <meta name="description" content="Free online MIDI VLQ decoder. Convert variable-length quantity bytes from hex, binary, or decimal and calculate MIDI delta time using PPQ.">
+  <title>Online MIDI VLQ Encoder &amp; Decoder | Hex, Binary &amp; Decimal</title>
+  <meta name="description" content="Free online MIDI VLQ encoder and decoder. Convert variable-length quantities in hex, binary, decimal, or quarter notes and calculate delta time using PPQ.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://thetakappamusic.com/apps/vlq">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Theta Kappa Music">
-  <meta property="og:title" content="Online MIDI VLQ Decoder">
-  <meta property="og:description" content="Decode MIDI variable-length quantity bytes from hex, binary, or decimal and calculate delta time from PPQ.">
+  <meta property="og:title" content="Online MIDI VLQ Encoder &amp; Decoder">
+  <meta property="og:description" content="Encode or decode MIDI variable-length quantities in hex, binary, decimal, or quarter notes and calculate delta time from PPQ.">
   <meta property="og:url" content="https://thetakappamusic.com/apps/vlq">
   <meta property="og:image" content="https://thetakappamusic.com/assets/vlq-converter-icon-c-to-e-1024.png">
   <meta property="og:image:alt" content="MIDI VLQ decoder icon">
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../styles/main.css?v=20260922-vlq-seo">
+  <link rel="stylesheet" href="../styles/main.css?v=20260923-vlq-encoder">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -42,8 +42,8 @@
   <main id="main">
     <article class="page vlq-page">
       <p class="eyebrow">Free online MIDI tool</p>
-      <h1>Online MIDI VLQ Decoder</h1>
-      <p class="lead">Decode a MIDI variable-length quantity (VLQ) from hexadecimal, binary, or decimal bytes. View the result in all three number formats and calculate delta-time duration from PPQ.</p>
+      <h1>Online MIDI VLQ Encoder &amp; Decoder</h1>
+      <p class="lead">Encode or decode a MIDI variable-length quantity (VLQ) using hexadecimal, binary, decimal, or quarter-note durations. Convert delta time with PPQ and view every result as MIDI-ready bytes.</p>
 
       <section class="vlq-panel" aria-labelledby="decoder-heading">
         <h2 id="decoder-heading">Decode a value</h2>
@@ -136,10 +136,102 @@
         </dl>
       </section>
 
+      <section class="vlq-panel vlq-encoder-panel" aria-labelledby="encoder-heading">
+        <h2 id="encoder-heading">Encode a value</h2>
+
+        <form id="vlq-encode-form" class="vlq-form" novalidate>
+          <fieldset class="vlq-format-picker">
+            <legend>Input format</legend>
+            <div class="vlq-format-options vlq-format-options--four">
+              <label>
+                <input type="radio" name="vlq-encode-format" value="hex">
+                <span>Hex</span>
+              </label>
+              <label>
+                <input type="radio" name="vlq-encode-format" value="binary">
+                <span>Binary</span>
+              </label>
+              <label>
+                <input type="radio" name="vlq-encode-format" value="decimal" checked>
+                <span>Decimal</span>
+              </label>
+              <label>
+                <input type="radio" name="vlq-encode-format" value="duration">
+                <span>Duration <small>(quarter notes)</small></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="vlq-input-group">
+            <label id="vlq-encode-input-label" for="vlq-encode-input">Value to encode</label>
+            <input
+              id="vlq-encode-input"
+              name="vlq-encode-input"
+              type="text"
+              value="9600"
+              placeholder="9600"
+              inputmode="numeric"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-describedby="vlq-encode-input-help vlq-encode-error"
+            >
+            <p id="vlq-encode-input-help" class="vlq-help">Enter the normal decimal integer that you want to encode as a MIDI VLQ.</p>
+          </div>
+
+          <div class="vlq-input-group vlq-ppq-group">
+            <label for="vlq-encode-ppq">PPQ</label>
+            <input
+              id="vlq-encode-ppq"
+              name="vlq-encode-ppq"
+              type="number"
+              value="9600"
+              min="1"
+              step="1"
+              inputmode="numeric"
+              aria-describedby="vlq-encode-ppq-help vlq-encode-error"
+              disabled
+            >
+            <p id="vlq-encode-ppq-help" class="vlq-help">Used when the input format is Duration (quarter notes).</p>
+          </div>
+
+          <div class="vlq-examples" aria-label="Encoder example values">
+            <span>Try:</span>
+            <button type="button" data-encode-value="0">0</button>
+            <button type="button" data-encode-value="127">127</button>
+            <button type="button" data-encode-value="128">128</button>
+            <button type="button" data-encode-value="9600">9,600 (1 beat)</button>
+            <button type="button" data-encode-value="16383">16,383</button>
+            <button type="button" data-encode-value="268435455">268,435,455</button>
+          </div>
+
+          <button class="vlq-decode-button" type="submit">Encode VLQ</button>
+          <p id="vlq-encode-error" class="vlq-error" role="alert" aria-live="assertive"></p>
+        </form>
+      </section>
+
+      <section class="vlq-results" aria-labelledby="encoded-results-heading" aria-live="polite">
+        <h2 id="encoded-results-heading">Encoded VLQ bytes</h2>
+        <dl>
+          <div>
+            <dt>Decimal bytes</dt>
+            <dd><output id="vlq-encoded-decimal" for="vlq-encode-input vlq-encode-ppq">203 0</output></dd>
+          </div>
+          <div>
+            <dt>Hexadecimal bytes</dt>
+            <dd><output id="vlq-encoded-hex" for="vlq-encode-input vlq-encode-ppq">CB 00</output></dd>
+          </div>
+          <div>
+            <dt>Binary bytes</dt>
+            <dd><output id="vlq-encoded-binary" for="vlq-encode-input vlq-encode-ppq">11001011 00000000</output></dd>
+          </div>
+        </dl>
+      </section>
+
       <section class="vlq-guide" aria-labelledby="about-vlq-heading">
         <h2 id="about-vlq-heading">What is a MIDI VLQ?</h2>
         <p>A variable-length quantity stores an unsigned integer in one to four bytes. Standard MIDI Files use VLQ values for delta times and for several length fields, allowing small numbers to take less space.</p>
-        <p>Each VLQ byte contains seven value bits. A most-significant bit of <code>1</code> means another byte follows; a most-significant bit of <code>0</code> marks the final byte. This decoder removes those continuation bits and combines the remaining data bits into a normal integer.</p>
+        <p>Each VLQ byte contains seven value bits. A most-significant bit of <code>1</code> means another byte follows; a most-significant bit of <code>0</code> marks the final byte. The decoder removes those continuation bits, while the encoder adds them to a normal integer.</p>
 
         <h2>How to use the online MIDI VLQ decoder</h2>
         <ol>
@@ -147,6 +239,13 @@
           <li>Enter the encoded VLQ bytes. Compact hex such as <code>CB00</code> and separated hex such as <code>CB 00</code> are both accepted.</li>
           <li>Enter the MIDI file's PPQ value if you also want the delta time expressed in quarter notes.</li>
           <li>Read the decoded integer in decimal, hexadecimal, and binary.</li>
+        </ol>
+
+        <h2>How to encode a MIDI VLQ</h2>
+        <ol>
+          <li>Select whether the normal value is hexadecimal, binary, decimal, or a duration in quarter notes.</li>
+              <li>Enter the value. For a duration, also enter the MIDI file's PPQ; fractional tick results are rounded to the nearest whole tick.</li>
+          <li>Read the encoded MIDI VLQ byte sequence in decimal, hexadecimal, and binary.</li>
         </ol>
 
         <h2>MIDI delta time and PPQ</h2>
@@ -181,11 +280,11 @@
         <p>For decimal input, enter each encoded byte separately, such as <code>129 0</code>, or enter the bytes as one packed decimal value, such as <code>33024</code>.</p>
       </section>
 
-      <noscript><p class="vlq-noscript">This decoder requires JavaScript to run.</p></noscript>
+      <noscript><p class="vlq-noscript">The MIDI VLQ encoder and decoder require JavaScript to run.</p></noscript>
     </article>
   </main>
 
   <script src="../scripts/main.js" defer></script>
-  <script src="../scripts/vlq.js?v=20260922-ppq" defer></script>
+  <script src="../scripts/vlq.js?v=20260923-encoder" defer></script>
 </body>
 </html>
