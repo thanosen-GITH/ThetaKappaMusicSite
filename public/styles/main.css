@@ -222,6 +222,45 @@ li {
   color: var(--muted);
 }
 
+.privacy-policy {
+  max-width: 780px;
+}
+
+.privacy-policy section {
+  margin-top: 36px;
+}
+
+.privacy-policy h2 {
+  margin: 0 0 10px;
+  color: var(--gold);
+  font-size: clamp(20px, 2.5vw, 28px);
+}
+
+.privacy-policy p {
+  margin: 0 0 14px;
+  font-size: clamp(17px, 1.8vw, 21px);
+}
+
+.privacy-summary {
+  margin-top: 32px !important;
+  padding: 22px 24px 10px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.privacy-back,
+.apps-legal-link {
+  margin-top: 40px;
+}
+
+.privacy-back a,
+.apps-legal-link a {
+  color: var(--gold);
+  text-underline-offset: 3px;
+}
+
 .childhood-photo-story {
   margin: 32px 0 38px;
 }
